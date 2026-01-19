@@ -48,6 +48,8 @@ final class AssetUtil {
         return this.getUriForAssetPath(path);
       case "base64":
         return this.getUriForBase64Content(path, name);
+      case "data":
+        return this.getUriForDataPath(path);
       default:
         throw new RuntimeException("Unknown Attachment Type");
     }
@@ -140,6 +142,38 @@ final class AssetUtil {
     }
 
     return getUriForFile(ctx, file);
+  }
+
+  /* To use this make sure the following is in the src/main/res/xml/file_paths.xml
+   * <paths>
+   *    ...
+   *    <files-path name="internal_files" path="." />
+   * </paths>
+   * @param path - path to a file within the data (files) folder
+   * @return - the found Uri
+   */
+  private Uri getUriForDataPath(String path) {
+    File file = new File(this.ctx.getFilesDir(), path);
+    if (!file.exists()) {
+      throw new RuntimeException("File does not exist in files directory");
+    }    
+
+    // IMPORTANT: Resolve to the canonical path, otherwise getUriForFile can fail as it is 
+    // strict on the paths being exact (even if a link points to the sanme file, it can still fail)
+    // E.g.This converts /data/user/0/ to /data/data/
+    File canonicalFile;
+    try {
+      canonicalFile = file.getCanonicalFile();
+    } catch (Exception ex) {
+      throw new RuntimeException("Error getting CanonicalFile name");
+    }
+
+    if (!canonicalFile.exists()) {
+      String message = "The canonicalFile file does not exist at: " + canonicalFile.getPath();      
+      throw new RuntimeException(message);
+    }
+
+    return getUriForFile(ctx, canonicalFile);
   }
 
   private Uri getUriForFile(Context ctx, File file) {

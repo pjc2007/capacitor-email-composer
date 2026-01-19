@@ -100,6 +100,38 @@ EmailComposer.open({
 })
 ```
 
+### Data
+
+The path to the files relative to the Directory.Data option as defined in the Capacitor Filesystem plugin.
+Filesystem plugin... "Directory.Data: On iOS it will use the Documents directory. On Android it's the directory holding application files"
+This allows access to any files that may have been created using the above plugin.
+
+#### Configuration
+
+To use this for Android, make sure the following is in the src/main/res/xml/file_paths.xml
+
+```xml
+<paths>
+  ...
+  <files-path name="internal_files" path="." />
+</paths>
+```
+
+Nothing extra is required for ios.
+
+#### Usage
+
+```ts
+import { EmailComposer } from 'capacitor-email-composer'
+
+EmailComposer.open({
+  attachments: [{
+    type: 'data',
+    path: 'logfile.zip' // path to file including any relative subfolder path
+  }]
+})
+```
+
 ## API
 
 <docgen-index>

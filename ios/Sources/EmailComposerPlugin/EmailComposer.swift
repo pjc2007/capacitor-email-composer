@@ -76,6 +76,8 @@ extension String: Error {}
             return try self.getDataFromAssetPath(path: path)
         case "base64":
             return self.getDataFromBase64(base64: path)
+        case "data":
+            return try self.getDataFromDocumentsFolder(path: path)
         default:
             throw "Unknown Attachment Type"
         }
@@ -110,6 +112,25 @@ extension String: Error {}
 
     private func getDataFromBase64(base64: String) -> Data? {
         return Data.init(base64Encoded: base64, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
+    }
+
+    private func getDataFromDocumentsFolder(path: String) throws -> Data? {
+        // Get the URL for the app's documents directory
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            throw "Unable to access Documents directory"
+        }
+
+        // Create the full URL to the file by appending the relative path
+        let fileURL = documentsDirectory.appendingPathComponent(path)
+        let fullPath = fileURL.path
+
+        let fileManager = FileManager.default
+        if !fileManager.fileExists(atPath: fullPath) {
+            // It's helpful to include the path that failed in the error message for debugging
+            throw "File does not exist in Documents folder at path: \(path)"
+        }
+
+        return fileManager.contents(atPath: fullPath)
     }
 
     private func getMimeTypeFromFileExtension(pathExtension: String?) -> String {
