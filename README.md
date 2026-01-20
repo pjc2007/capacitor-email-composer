@@ -102,7 +102,7 @@ EmailComposer.open({
 
 ### Data
 
-The path to the files relative to the Directory.Data option as defined in the Capacitor Filesystem plugin.
+The path to the files relative to the Directory.Data option as defined in the [Capacitor Filesystem plugin](https://github.com/ionic-team/capacitor-filesystem).
 Filesystem plugin... "Directory.Data: On iOS it will use the Documents directory. On Android it's the directory holding application files"
 This allows access to any files that may have been created using the above plugin.
 
