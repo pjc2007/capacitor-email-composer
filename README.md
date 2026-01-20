@@ -117,7 +117,7 @@ To use this for Android, make sure the following is in the src/main/res/xml/file
 </paths>
 ```
 
-Nothing extra is required for ios.
+No special configuration is needed for ios.
 
 #### Usage
 
