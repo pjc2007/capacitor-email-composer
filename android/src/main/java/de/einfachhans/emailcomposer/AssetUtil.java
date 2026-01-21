@@ -143,15 +143,7 @@ final class AssetUtil {
 
     return getUriForFile(ctx, file);
   }
-
-  /* To use this make sure the following is in the src/main/res/xml/file_paths.xml
-   * <paths>
-   *    ...
-   *    <files-path name="internal_files" path="." />
-   * </paths>
-   * @param path - path to a file within the data (files) folder
-   * @return - the found Uri
-   */
+  
   private Uri getUriForDataPath(String path) {
     File file = new File(this.ctx.getFilesDir(), path);
     if (!file.exists()) {
@@ -159,7 +151,7 @@ final class AssetUtil {
     }    
 
     // IMPORTANT: Resolve to the canonical path, otherwise getUriForFile can fail as it is 
-    // strict on the paths being exact (even if a link points to the sanme file, it can still fail)
+    // strict on the paths being exact (even if a link points to the same file, it can still fail)
     // E.g.This converts /data/user/0/ to /data/data/
     File canonicalFile;
     try {
